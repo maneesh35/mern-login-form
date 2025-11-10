@@ -1,3 +1,5 @@
+
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -7,16 +9,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// MongoDB connection
+// ✅ MongoDB Connection (Local Compass)
 mongoose
-  .connect(
-    process.env.MONGO_URI ||
-      "mongodb+srv://maneeshm7034_db_user:odeJtYf5Hm8ScJkj@cluster0.c6ghktt.mongodb.net/testDB?retryWrites=true&w=majority"
-  )
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch((err) => console.error("❌ Error:", err));
+  .connect(process.env.MONGO_URI || "mongodb://localhost:27017/testDB", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("✅ MongoDB connected (Compass Local)"))
+  .catch((err) => console.error("❌ MongoDB Error:", err));
 
-// User model
+// ✅ User Schema & Model
 const User = mongoose.model(
   "employees",
   new mongoose.Schema({
@@ -26,7 +28,7 @@ const User = mongoose.model(
   })
 );
 
-// 🆕 Show all users (just names + age)
+// 🧾 Show all users (name + age only)
 app.get("/", async (req, res) => {
   try {
     const users = await User.find({}, "name age");
@@ -36,43 +38,52 @@ app.get("/", async (req, res) => {
   }
 });
 
-// 📝 Register user
+// 📝 Register User
 app.post("/register", async (req, res) => {
   try {
     const { name, age, password } = req.body;
 
-    if (!name || !password || !age) {
+    if (!name || !age || !password) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    const hashed = await bcrypt.hash(password, 10);
-    const user = new User({ name, password: hashed, age });
-
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({ name, age, password: hashedPassword });
     await user.save();
+
     res.json({ message: "✅ User registered successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// 🔑 Login user
+// 🔑 Login User
 app.post("/login", async (req, res) => {
   try {
     const { name, password } = req.body;
     const user = await User.findOne({ name });
 
-    if (!user) return res.status(400).json({ error: "User not found" });
+    if (!user) {
+      return res.status(400).json({ error: "❌ User not found" });
+    }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ error: "Wrong password" });
+    const passwordMatch = await bcrypt.compare(password, user.password);
 
-    res.json({ message: "✅ Login successful", user: { name: user.name, age: user.age } });
+    if (!passwordMatch) {
+      return res.status(400).json({ error: "❌ Incorrect password" });
+    }
+
+    res.json({
+      message: "✅ Login successful",
+      user: { name: user.name, age: user.age },
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// Start server
-app.listen(5000, () =>
-  console.log("🚀 Backend running on http://localhost:5000")
+// 🚀 Start Server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () =>
+  console.log(`🚀 Server running on http://localhost:${PORT}`)
 );

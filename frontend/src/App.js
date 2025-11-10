@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./App.css";
 
 function App() {
   const [name, setName] = useState("");
@@ -35,39 +36,46 @@ function App() {
   };
 
   return (
-    <div style={{ margin: "50px" }}>
-      <h2>Login Form</h2>
-      <input
-        type="text"
-        placeholder="Username"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <br />
-      <br />
+    <div className="app-container">
+      <div className="form-wrapper">
+        <h2 className="form-title">Login Form</h2>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Username"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="form-input"
+          />
+        </div>
 
-      <input
-        type="number"
-        placeholder="Age"
-        value={age}
-        onChange={(e) => setAge(e.target.value)}
-      />
-      <br />
-      <br />
+        <div className="form-group">
+          <input
+            type="number"
+            placeholder="Age"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            className="form-input"
+          />
+        </div>
 
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <br />
-      <br />
+        <div className="form-group">
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="form-input"
+          />
+        </div>
 
-      <button onClick={register}>Register</button>
-      <button onClick={login}>Login</button>
+        <div className="button-group">
+          <button onClick={register} className="btn btn-register">Register</button>
+          <button onClick={login} className="btn btn-login">Login</button>
+        </div>
 
-      <p>{msg}</p>
+        {msg && <p className="message">{msg}</p>}
+      </div>
     </div>
   );
 }

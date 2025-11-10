@@ -1,38 +1,63 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+/* Full Page Background */
+.app-container {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  align-items: center;
+  background: #4e73df; /* Blue */
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Form Box */
+.form-wrapper {
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0px 6px 18px rgba(0,0,0,0.2);
+}
+
+/* Title */
+.form-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 18px;
+  color: #333;
+}
+
+/* Input */
+.form-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  margin-bottom: 14px;
+  font-size: 15px;
+}
+
+/* Buttons */
+.btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  background: #1cc88a; /* Green */
+  border: none;
+  border-radius: 6px;
   color: white;
+  cursor: pointer;
+  margin-top: 8px;
 }
 
-.App-link {
-  color: #61dafb;
+.btn:hover {
+  background: #17a673;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Message Box */
+.message {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
 }
